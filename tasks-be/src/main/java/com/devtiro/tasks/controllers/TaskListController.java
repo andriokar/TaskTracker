@@ -8,6 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
 
 @RestController
 @RequestMapping(path = "/task-lists")
@@ -35,5 +37,10 @@ public class TaskListController {
         TaskList createdTaskList = taskListService.createTaskList(taskListMapper.fromDto(taskListDto));
 
         return taskListMapper.toDto(createdTaskList);
+    }
+
+    @GetMapping(path = "/{task_list_id}")
+    public Optional<TaskListDto> getTaskList(@PathVariable UUID task_list_id) {
+        return taskListService.getTaskList(task_list_id).map(taskListMapper::toDto);
     }
 }
