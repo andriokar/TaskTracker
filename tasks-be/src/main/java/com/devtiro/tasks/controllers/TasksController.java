@@ -7,7 +7,6 @@ import com.devtiro.tasks.services.TaskService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import javax.xml.xpath.XPath;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -36,7 +35,8 @@ public class TasksController {
     @PostMapping
     public TaskDto createTask(
             @PathVariable("task_list_id") UUID taskListId,
-            @RequestBody TaskDto taskDto) {
+            @RequestBody TaskDto taskDto
+    ) {
         Task createdTask = taskService.createTask(taskListId, taskMapper.fromDto(taskDto));
 
         return taskMapper.toDto(createdTask);
@@ -59,5 +59,13 @@ public class TasksController {
         Task updatedTask = taskService.updateTask(taskListId, taskId, taskMapper.fromDto(taskDto));
 
         return taskMapper.toDto(updatedTask);
+    }
+
+    @DeleteMapping("/{task_id}")
+    public void deleteTask(
+            @PathVariable("task_list_id") UUID taskListId,
+            @PathVariable("task_id") UUID taskId
+    ) {
+        taskService.deleteTask(taskListId, taskId);
     }
 }
